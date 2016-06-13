@@ -73,7 +73,8 @@ def redditBotFunction(submission):
 		redditSubmissionTitle = ("No new distress calls since " + lastPostTimestamp)
 		botTalkToggle = False
 
-@sopel.module.interval(30)
+#limit is 2 per second or 30 per minute.
+@sopel.module.interval(60)
 def reddit_check(bot):
 	global currentPlaceInSubmissionList
 	currentPlaceInSubmissionList = 1
@@ -108,3 +109,4 @@ def repetition_text(bot):
 		if botTalkToggle == True:
 			#the system works, and will stay quiet if there is nothing to report. 
 			bot.msg("#rattest", redditSubmissionTitle)
+			bot.msg("#rattest", ratsignalURL)
