@@ -17,6 +17,8 @@ import datetime
 #TO-DO rewrite this to not use globals and instead pass values between functions
 global redditSubmissionTitle
 redditSubmissionTitle = "No Entries Yet"
+global ratsignalURL
+ratsignalURL = ""
 
 #control the submission iterations
 global currentPlaceInSubmissionList
@@ -53,6 +55,7 @@ def redditBotFunction(submission):
 	global redditSubmissionTitle
 	global botTalkToggle
 	global redditCheckTimer
+	global ratsignalURL
 	titleText = submission.selftext
 	regExCheck = re.compile(ratsignalString,re.IGNORECASE|re.DOTALL)
 	checkTitleForRatsignal = regExCheck.search(titleText)
@@ -63,22 +66,27 @@ def redditBotFunction(submission):
 		currentPlaceInSubmissionList = 6			    	
 		redditCheckTimer = (float(submission.created_utc))
 		redditSubmissionTitle = submission.title
+		ratsignalURL = submission.url
 		botTalkToggle = True
 		#implement lastcall log
 	elif (currentPlaceInSubmissionList == 5):
 		redditSubmissionTitle = ("No new distress calls since " + lastPostTimestamp)
 		botTalkToggle = False
 
-@sopel.module.interval(30)
+#limit is 2 per second or 30 per minute.
+@sopel.module.interval(60)
 def reddit_check(bot):
 	global currentPlaceInSubmissionList
 	currentPlaceInSubmissionList = 1
 	for submission in subreddit.get_new(limit = 5):
 		global redditCheckTimer
+		global ratsignalURL
 		#easily compare dates using these two lines
 		# print submission.created_utc
 		print redditCheckTimer
 		if float(submission.created_utc) <= float(redditCheckTimer):
+			if (currentPlaceInSubmissionList == 5):
+				ratsignalURL = ""
 			#print "Item Skipped"
 			#print currentPlaceInSubmissionList
 			currentPlaceInSubmissionList += 1
@@ -92,6 +100,7 @@ def reddit_check(bot):
 @sopel.module.commands('reddit')
 def check_reddit(bot, trigger):
 	bot.msg("#rattest", redditSubmissionTitle)
+	bot.msg("#rattest", ratsignalURL)
 
 #this waits and sends a message to #FuelRats if there is a new Ratsignal on r/fuelrats
 @sopel.module.interval(25)
@@ -100,3 +109,4 @@ def repetition_text(bot):
 		if botTalkToggle == True:
 			#the system works, and will stay quiet if there is nothing to report. 
 			bot.msg("#rattest", redditSubmissionTitle)
+			bot.msg("#rattest", ratsignalURL)
