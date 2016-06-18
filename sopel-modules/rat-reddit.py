@@ -77,24 +77,12 @@ def redditBotFunction(submission):
 		botTalkToggle = True
 		numberOfNewCalls += 1
 		currentPlaceInSubmissionList = 99
-		#this will make the next post cycle wait 5 minutes.
-		#automaticNotificationTimer = 300
 		signalFound = True
-		print ("option one" + redditSubmissionTitle)
-		#automaticNotificationTimer += 60 #add one minute to interval per Ratsignal
-		#implement lastcall log
 	elif (signalFound == False):
 		redditSubmissionTitle = ("No new distress calls since " + lastPostTimestamp)
 		botTalkToggle = False
-		#automaticNotificationTimer = 120
-		print ("option two")
-		if (currentPlaceInSubmissionList >=10):
-			#redditCheckTimer = (float(submission.created_utc))
-			print ("option two plus")
-		#redditCheckTimer = (float(submission.created_utc))
 	elif (signalFound == True):
 		signalFound = True
-		print ("option three")
 
 #limit is 2 per second or 30 per minute.
 #can match it to the post frequency, minus a bit to let it run first. Too fast and it will collect data without posting it.
@@ -109,8 +97,6 @@ def reddit_check(bot):
 	""" ----------- """
 	signalFound = False
 	numberOfNewCalls = 0
-	# print (redditCheckTimer)
-	# print ("-+-+-+-+-+-+-+-+")
 	currentPlaceInSubmissionList = 1
 	for submission in subreddit.get_new(limit = 10):
 		if (((submission.created_utc) < (redditCheckTimer))): #or (currentPlaceInSubmissionList >= 9)):
