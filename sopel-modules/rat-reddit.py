@@ -42,10 +42,6 @@ def setup(bot):
 	# automaticNotificationTimer = 60
 
 	global redditCheckTimer
-	#today = int(datetime.utcnow())
-	#current_time = datetime.datetime.now(datetime.timezone.utc)
-	#unix_timestamp = current_time.timestamp()
-	#today = datetime.datetime.today()
 	todayStamp = int(time.time())
 	redditCheckTimer =  float(todayStamp) #(float(datetime.datetime.utcfromtimestamp(int(todayStamp)))) #150000 #float(unix_timestamp) - (15000000)
 	#redditCheckTimer = 1500000
@@ -92,7 +88,7 @@ def redditBotFunction(submission):
 		botTalkToggle = False
 		#automaticNotificationTimer = 120
 		print ("option two")
-		if (currentPlaceInSubmissionList >=9):
+		if (currentPlaceInSubmissionList >=10):
 			#redditCheckTimer = (float(submission.created_utc))
 			print ("option two plus")
 		#redditCheckTimer = (float(submission.created_utc))
@@ -119,7 +115,7 @@ def reddit_check(bot):
 	for submission in subreddit.get_new(limit = 10):
 		if (((submission.created_utc) < (redditCheckTimer))): #or (currentPlaceInSubmissionList >= 9)):
 			runItem = False
-		elif (currentPlaceInSubmissionList <= 9):
+		elif (currentPlaceInSubmissionList <= 10):
 			runItem = True
 		print (str(runItem) + "\n")
 		#easily compare dates using these two lines
