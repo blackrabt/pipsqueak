@@ -86,7 +86,7 @@ def redditBotFunction(submission):
 
 #limit is 2 per second or 30 per minute.
 #can match it to the post frequency, minus a bit to let it run first. Too fast and it will collect data without posting it.
-@sopel.module.interval((25))
+@sopel.module.interval((60))
 def reddit_check(bot):
 	""" Declare Globals """
 	global currentPlaceInSubmissionList
@@ -129,7 +129,7 @@ def check_reddit(bot, trigger):
 	time.sleep(5)
 
 #this waits and sends a message to #FuelRats if there is a new Ratsignal on r/fuelrats
-@sopel.module.interval(15)
+@sopel.module.interval(65)
 def repetition_text(bot):
 	if "#rattest" in bot.channels:
 		if botTalkToggle == True:
